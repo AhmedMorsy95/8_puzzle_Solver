@@ -28,10 +28,6 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("Sample.fxml"));
-			//Scene scene = new Scene(root,400,400);
-			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			
-		
 			
 			GridPane grid = new GridPane();
 			
@@ -82,7 +78,7 @@ public class Main extends Application {
 		return numbers;
 	}
 	
-	ArrayList<Integer> generate_random(){
+	ArrayList<Integer> generate_random(){  /// generates an arraylist with numbers from 0 -> 8 in random positions
 		ArrayList<Integer> x = new ArrayList<Integer>();
 		
 		for(int i=0;i<9;i++){
@@ -107,15 +103,7 @@ public class Main extends Application {
 		return x;
 	}
 	
-	boolean base_case(ArrayList<Integer> x){
-		for(int i=0;i<9;i++){
-			if(x.get(i) != i)
-				 return false;
-		}
-		return true;
-	}
-	
-	Integer getNumber(ArrayList<Integer> x){
+	Integer getNumber(ArrayList<Integer> x){ /// given a list of numbers returns the number composed of adding all the number in the list together
 		Integer ret = 0;
 		for(int i=0;i<x.size();i++){
 		    ret *= 10;
@@ -124,7 +112,7 @@ public class Main extends Application {
 		return ret;
 	}
 
-	ArrayList<Integer> getNumberList(int x){
+	ArrayList<Integer> getNumberList(int x){ /// given a number concatenates each digit in it and adds them into the list
 		ArrayList<Integer> ret = new ArrayList<Integer>();
 		
 		while(x != 0){
@@ -140,8 +128,7 @@ public class Main extends Application {
 	}
 	
 	HashSet<Integer> visited = new HashSet<Integer>();
-	void dfs(ArrayList<Integer> state){
-		
+	void dfs(ArrayList<Integer> state){  /// dfs implementation 
 		
 		Stack<Integer> s = new Stack<Integer>(); 
 		
@@ -150,19 +137,16 @@ public class Main extends Application {
 		
 		System.out.println(getNumber(state) + "  "+ state.size());
 		
-		int counter = 0;
-      while(!s.empty()){
+		while(!s.empty()){
     	  
     	  int cur = s.peek();
-
-          System.out.println(cur);
-    	  s.pop();
-    	  if(cur == 12345678){
+          s.pop();
+    	
+          if(cur == 12345678){
     		  System.out.print("DOOOOOOOOONE");
     		  return;
     	  }
     	  
-
   		state = getNumberList(cur);
   		
     	 /// find the zero index 
@@ -174,7 +158,7 @@ public class Main extends Application {
 			}
 		}
 		
-		
+		/// visit neighbours
 		for(int i=-1;i<2;i++){
 			for(int j=-1;j<2;j++){
 				int a = row+i;
