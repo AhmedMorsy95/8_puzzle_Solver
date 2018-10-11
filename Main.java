@@ -5,8 +5,11 @@ import java.net.Inet4Address;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Observable;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Stack;
 
@@ -56,7 +59,8 @@ public class Main extends Application {
 			primaryStage.show();
 			dfs(cur);
 			
-			
+			print_path();
+				
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -128,14 +132,26 @@ public class Main extends Application {
 	}
 	
 	HashSet<Integer> visited = new HashSet<Integer>();
+	HashMap<Integer,Integer> parent = new HashMap<Integer,Integer>();
+	
+	void print_path(){
+		int cur = 12345678;
+		ArrayList<Integer> x = new ArrayList<Integer>();
+		while(parent.containsKey(cur)){
+			x.add(cur);
+			cur = parent.get(cur);
+		}
+		x.add(cur);
+		Collections.reverse(x);
+		for(int i=0;i<x.size();i++)
+			 System.out.println(x.get(i));
+	}
 	void dfs(ArrayList<Integer> state){  /// dfs implementation 
 		
 		Stack<Integer> s = new Stack<Integer>(); 
 		
 		s.push(getNumber(state));
 		visited.add(getNumber(state));
-		
-		System.out.println(getNumber(state) + "  "+ state.size());
 		
 		while(!s.empty()){
     	  
@@ -144,7 +160,7 @@ public class Main extends Application {
     	
           if(cur == 12345678){
     		  System.out.print("DOOOOOOOOONE");
-    		  return;
+    		  break;
     	  }
     	  
   		state = getNumberList(cur);
@@ -185,11 +201,97 @@ public class Main extends Application {
 				
 				s.push(getNumber(tmp));
 				visited.add(getNumber(tmp));
-				
+	            parent.put(getNumber(tmp),cur); 			
 			}
 		}
       }
 	}
+	
+	
+	HashSet<Integer> visitedbfs = new HashSet<Integer>();
+	void bfs(ArrayList<Integer> state) {
+		Queue<Integer> q=new LinkedList<Integer>();
+		q.add(getNumber(state));
+		System.out.println(getNumber(state));
+		visitedbfs.add(getNumber(state));
+		while(!q.isEmpty()) {
+			int ourstate=q.peek();
+			q.poll();
+			if(ourstate==12345678)
+			{
+				System.out.println("DONE");
+				return ;
+			}
+			state=getNumberList(ourstate);
+			int row = 0 , col = 0;
+			for(int i=0;i<state.size();i++){
+				if(state.get(i) == 0){
+					row = i/3;
+					col = i%3;
+				}
+			}
+			ArrayList<Integer> tmp = new ArrayList<Integer>();
+			for(int k=0;k<state.size();k++){
+				tmp.add(state.get(k));
+			}
+			if(row+1<3) {
+				int index=state.get(row*3 + 3 +col);
+			    tmp.set(row*3+3+col,0);
+			    tmp.set(row*3+col, index);
+			    if(!visitedbfs.contains(getNumber(tmp)))
+			    {
+			    	q.add(getNumber(tmp));
+			    	visitedbfs.add(getNumber(tmp));
+			    }
+			}
+			if(row-1>=0) {
+				tmp.clear();
+				for(int k=0;k<state.size();k++){
+					tmp.add(state.get(k));
+				}
+				int index=state.get((row-1)*3 +col);
+			    tmp.set((row-1)*3+col,0);
+			    tmp.set(row*3+col, index);
+			    if(!visitedbfs.contains(getNumber(tmp)))
+			    {
+			    	q.add(getNumber(tmp));
+			    	visitedbfs.add(getNumber(tmp));
+			    }
+ 
+			}
+			if(col+1<3) {
+				tmp.clear();
+				for(int k=0;k<state.size();k++){
+					tmp.add(state.get(k));
+				}
+				int index=state.get(row*3 +col+1);
+			    tmp.set(row*3+col+1,0);
+			    tmp.set(row*3+col, index);
+			    if(!visitedbfs.contains(getNumber(tmp)))
+			    {
+			    	q.add(getNumber(tmp));
+			    	visitedbfs.add(getNumber(tmp));
+			    }
+			}
+			if(col-1>=0) {
+				tmp.clear();
+				for(int k=0;k<state.size();k++){
+					tmp.add(state.get(k));
+				}
+				int index=state.get(row*3 +col-1);
+			    tmp.set(row*3+col-1,0);
+			    tmp.set(row*3+col, index);
+			    if(!visitedbfs.contains(getNumber(tmp)));
+			    {
+			    	q.add(getNumber(tmp));
+			    	visitedbfs.add(getNumber(tmp));
+			    }
+			}
+ 
+		}
+ 
+	}
+	
 	
 	public static void main(String[] args) {
 		launch(args);
