@@ -28,7 +28,17 @@ public class DFS {
 		for(int i=0;i<x.size();i++)
 			 System.out.println(x.get(i));
 	}
-	    void dfs(){  /// dfs implementation 
+	int get_path_length(){
+		int cur = 12345678;
+		ArrayList<Integer> x = new ArrayList<Integer>();
+		while(parent.containsKey(cur)){
+			x.add(cur);
+			cur = parent.get(cur);
+		}
+		x.add(cur);
+		return x.size()-1;
+	}
+	    boolean dfs(){  /// dfs implementation 
 		
 		Stack<Node> s = new Stack<Node>(); 
 		
@@ -44,7 +54,7 @@ public class DFS {
     	
           if(cur.id == 12345678){
     		  System.out.println("DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONE");
-    		  break;
+    		  return true;
     	  }
     	  
   		ArrayList<Integer> state = Node.getNumberList(cur.id);
@@ -90,5 +100,6 @@ public class DFS {
 			}
 		}
       }
+		return false;
 	}
 }

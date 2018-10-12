@@ -38,7 +38,7 @@ public class Main extends Application {
 			grid.setPadding(new Insets(3,3,3,3));
 			grid.setAlignment(Pos.CENTER);
 		    
-			ArrayList<Integer> cur = Node.generate_random();
+			ArrayList<Integer> cur = (Node.generate_random());
 			
 			ArrayList<Label> numbers =  modify_labels(cur);
 			
@@ -58,11 +58,20 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
+			System.out.println(Node.getNumber(cur));
 			DFS go = new DFS(new Node(Node.getNumber(cur)));
-			go.dfs();
+			if(go.dfs()){
+				System.out.println("DFS reached in " + go.get_path_length() + " steps");
+			}
+			else{
+				System.out.println("this grid has no solution");
+			}
 			
 			BFS go2 = new BFS(new Node(Node.getNumber(cur)));
-			go2.bfs();
+			if(go2.bfs()){
+				//go2.print_path();
+				System.out.println("BFS reached in " + go2.get_path_length() + " steps");
+			}
 			
 				
 		} catch(Exception e) {
