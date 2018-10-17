@@ -8,53 +8,67 @@ import java.util.Stack;
 
 public class DFS {
 	HashSet<Integer> visited = new HashSet<Integer>();
-	HashMap<Integer,Integer> parent = new HashMap<Integer,Integer>();
-	
+
+	HashMap<Integer,Integer> depth = new HashMap<Integer,Integer>();
+	HashMap<Integer,String> parent = new HashMap<Integer,String>();
+    HashMap<Integer,Integer> parent_id = new HashMap<Integer,Integer>();
+    
 	Node source;
+
+	Path_Info save = new Path_Info();
+
 	DFS(Node a){
-		source = a;
+		   source = a;
+		   save.cost = 0;
+	       save.depth = 0;
+	       save.path = "";
+	       save.expansion = 0;
 	}
+	
+    int get_G(int id){
+ 	  if(depth.containsKey(id)) 
+ 	    return depth.get(id);
+ 	  return 0;
+    }
+    
+    String get_Path(){
+       String ret = "";  
+ 	   int cur = 12345678;
+ 	   while(parent.containsKey(cur)){
+ 	       ret += parent.get(cur);
+ 	       cur = parent_id.get(cur);
+ 	   }
+        StringBuilder x = new StringBuilder(); 
+        x.append(ret);
+        x.reverse();
+       return x.toString();
+    }
+
 	/// notes sometimes it doesnot reach a solution
 	
-	void print_path(){
-		int cur = 12345678;
-		ArrayList<Integer> x = new ArrayList<Integer>();
-		while(parent.containsKey(cur)){
-			x.add(cur);
-			cur = parent.get(cur);
-		}
-		x.add(cur);
-		Collections.reverse(x);
-		for(int i=0;i<x.size();i++)
-			 System.out.println(x.get(i));
-	}
-	int get_path_length(){
-		int cur = 12345678;
-		ArrayList<Integer> x = new ArrayList<Integer>();
-		while(parent.containsKey(cur)){
-			x.add(cur);
-			cur = parent.get(cur);
-		}
-		x.add(cur);
-		return x.size()-1;
-	}
 	    boolean dfs(){  /// dfs implementation 
 		
 		Stack<Node> s = new Stack<Node>(); 
 		
 		s.push(source);
 		visited.add(source.id);
-		
+	    depth.put(source.id, 0);
+	    
 		while(!s.empty()){
     	  
     	  Node cur = s.peek();
           s.pop();
           
+          
         //  System.out.println(cur.id);
-    	
+  		save.depth = Math.max(save.depth, get_G(cur.id));
+
           if(cur.id == 12345678){
-    		  System.out.println("DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONE");
-    		  return true;
+			   save.expansion = visited.size() - s.size();
+			   save.cost = get_G(cur.id);
+			   save.path = get_Path();
+
+        	  return true;
     	  }
     	  
   		ArrayList<Integer> state = Node.getNumberList(cur.id);
@@ -96,7 +110,21 @@ public class DFS {
 				
 				s.push(new_node);
 				visited.add(new_node.id);
-	            parent.put(new_node.id,cur.id); 			
+				parent_id.put(new_node.id, cur.id);
+				depth.put(new_node.id, get_G(cur.id)+1);
+				    if(i == -1){
+			    	  parent.put(new_node.id, "U");
+				    }
+				    if(i == 1){
+			    	  parent.put(new_node.id, "U");
+				    }
+				    if(j == -1){
+			    	  parent.put(new_node.id, "L");
+			        }
+			        if(j == 1){
+			    	  parent.put(new_node.id, "R");
+			        }
+				
 			}
 		}
       }
