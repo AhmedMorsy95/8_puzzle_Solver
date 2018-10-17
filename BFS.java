@@ -9,35 +9,42 @@ import java.util.Queue;
 
 public class BFS {
 	HashSet<Integer> visitedbfs = new HashSet<Integer>();
-	HashMap<Integer,Integer> parent = new HashMap<Integer,Integer>();
-	
+	HashMap<Integer,Integer> depth = new HashMap<Integer,Integer>();
+	HashMap<Integer,String> parent = new HashMap<Integer,String>();
+    HashMap<Integer,Integer> parent_id = new HashMap<Integer,Integer>();
+	   	
 	Node source;
+
+    Path_Info save = new Path_Info();
 	
-	BFS(Node a){
-		source = a;
+    BFS(Node a){
+		   source = a;
+		   save.cost = 0;
+	       save.depth = 0;
+	       save.path = "";
+	       save.expansion = 0;
+		   
 	}
-	void print_path(){
-		int cur = 12345678;
-		ArrayList<Integer> x = new ArrayList<Integer>();
-		while(parent.containsKey(cur) && cur != source.id){
-			x.add(cur);
-			cur = parent.get(cur);
-		}
-		x.add(cur);
-		Collections.reverse(x);
-		for(int i=0;i<x.size();i++)
-			 System.out.println(x.get(i));
-	}
-	int get_path_length(){
-		int cur = 12345678;
-		ArrayList<Integer> x = new ArrayList<Integer>();
-		while(parent.containsKey(cur)){
-			x.add(cur);
-			cur = parent.get(cur);
-		}
-		x.add(cur);
-		return x.size()-1;
-	}
+
+    int get_G(int id){
+ 	  if(depth.containsKey(id)) 
+ 	    return depth.get(id);
+ 	  return 0;
+    }
+    
+    String get_Path(){
+       String ret = "";  
+ 	   int cur = 12345678;
+ 	   while(parent.containsKey(cur)){
+ 	       ret += parent.get(cur);
+ 	       cur = parent_id.get(cur);
+ 	   }
+        StringBuilder x = new StringBuilder(); 
+        x.append(ret);
+        x.reverse();
+ 	   return x.toString();
+    }
+
 	boolean bfs() {
 		ArrayList<Integer> state = Node.getNumberList(source.id);
 		
@@ -45,16 +52,22 @@ public class BFS {
 		
 		q.add(source);
 		visitedbfs.add(source.id);
-		
+        
+		depth.put(source.id, 0);
 		while(!q.isEmpty()) {
 			
 			Node ourstate=q.peek();
 			
+			save.depth = Math.max(save.depth, get_G(ourstate.id));
+            
+
 			//System.out.println(ourstate.id);
 			q.poll();
 			if(ourstate.id == 12345678)
 			{
-				System.out.println("DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONE");
+ 			   save.expansion = visitedbfs.size() - q.size();
+ 			   save.cost = get_G(ourstate.id);
+ 			   save.path = get_Path();
 				return true;
 			}
 			
@@ -81,7 +94,9 @@ public class BFS {
 			    	Node new_node =new Node(Node.getNumber(tmp));
 			    	q.add(new_node);
 			    	visitedbfs.add(new_node.id);
-		            parent.put(new_node.id,ourstate.id); 			
+		            parent.put(new_node.id,"D");
+		            parent_id.put(new_node.id,ourstate.id);
+					depth.put(new_node.id, get_G(ourstate.id)+1);
 			    }
 			  
 			}
@@ -98,7 +113,9 @@ public class BFS {
 			    	Node new_node =new Node(Node.getNumber(tmp));
 			    	q.add(new_node);
 			    	visitedbfs.add(new_node.id);
-		            parent.put(new_node.id,ourstate.id); 			
+		            parent.put(new_node.id,"U");
+		            parent_id.put(new_node.id,ourstate.id); 	
+					depth.put(new_node.id, get_G(ourstate.id)+1);		
 			    }
  
 			}
@@ -115,7 +132,9 @@ public class BFS {
 			    	Node new_node =new Node(Node.getNumber(tmp));
 			    	q.add(new_node);
 			    	visitedbfs.add(new_node.id);
-		            parent.put(new_node.id,ourstate.id); 			
+		            parent.put(new_node.id,"R");
+		            parent_id.put(new_node.id,ourstate.id); 	
+					depth.put(new_node.id, get_G(ourstate.id)+1);		
 			    }
 			}
 			if(col-1>=0) {
@@ -131,7 +150,9 @@ public class BFS {
 			    	Node new_node =new Node(Node.getNumber(tmp));
 			    	q.add(new_node);
 			    	visitedbfs.add(new_node.id);
-		            parent.put(new_node.id,ourstate.id); 			
+		            parent.put(new_node.id,"L");
+		            parent_id.put(new_node.id,ourstate.id); 	
+					depth.put(new_node.id, get_G(ourstate.id)+1);		
 			    }
 			}
  

@@ -15,7 +15,7 @@ import com.sun.media.jfxmedia.events.NewFrameEvent;
 
 import javafx.util.Pair;
 
-public class A_star_Euclidean {
+public class A_star_Manhattan {
        Node source;
        
        /// first cost so far then the node
@@ -35,7 +35,7 @@ public class A_star_Euclidean {
 	   
    	   Path_Info save = new Path_Info();
        
-   	   public A_star_Euclidean(Node a) {
+   	   public A_star_Manhattan(Node a) {
  	       save.cost = 0;
  	       save.depth = 0;
  	       save.path = "";
@@ -49,7 +49,7 @@ public class A_star_Euclidean {
     		     int pos = cur.get(i);
     		     int x = pos/3 , y = pos%3;
     		     int x2 = i/3 , y2 = i%3;
-    		     cost += (x2-x)*(x2-x) + (y2-y)*(y2-y);
+    		     cost += Math.abs(x2-x)+ Math.abs(y2-y);
     	   }
     	   return cost;
        }
@@ -78,8 +78,7 @@ public class A_star_Euclidean {
     		   my_Pair cur = q.peek();
     		   q.poll();
     	  	   int current_node = cur.id;
-    		   save.depth = Math.max(save.depth, get_G(current_node));
-    	  	   if(current_node == 12345678){
+    		   if(current_node == 12345678){
     			   save.expansion = visited.size() - q.size();
     			   save.cost = get_G(current_node);
     			   save.path = get_Path();
@@ -124,9 +123,10 @@ public class A_star_Euclidean {
     					}
     					
     					visited.add(new_node.id);
+    					depth.put(new_node.id, get_G(current_node) + 1);
     					/// get my heuristics + cost so far + 1
-    					depth.put(new_node.id, get_G(current_node)+1);
     					q.add(new my_Pair(new_node.id,get_Heuristics(new_node.id) + get_G(current_node) +1));
+    					save.depth = Math.max(save.depth, get_G(current_node)+1);
     				    parent_id.put(new_node.id, current_node);
     				    if(i == -1){
     			    	  parent.put(new_node.id, "U");

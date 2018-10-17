@@ -1,5 +1,6 @@
 package application;
 	
+import java.awt.Button;
 import java.lang.reflect.Array;
 import java.net.Inet4Address;
 import java.time.format.ResolverStyle;
@@ -38,6 +39,7 @@ public class Main extends Application {
 			grid.setPadding(new Insets(3,3,3,3));
 			grid.setAlignment(Pos.CENTER);
 		    
+			///    120345678    
 			ArrayList<Integer> cur = (Node.getNumberList(864213570));
 			
 			ArrayList<Label> numbers =  modify_labels(cur);
@@ -58,24 +60,32 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			System.out.println(Node.getNumber(cur));
-			DFS go = new DFS(new Node(Node.getNumber(cur)));
+			/*DFS go = new DFS(new Node(Node.getNumber(cur)));
 			if(go.dfs()){
 				System.out.println("DFS reached in " + go.get_path_length() + " steps");
 			}
 			else{
 				System.out.println("this grid has no solution");
 			}
-			
+			*/
 			BFS go2 = new BFS(new Node(Node.getNumber(cur)));
-			if(go2.bfs()){
-				//go2.print_path();
-				System.out.println("BFS reached in " + go2.get_path_length() + " steps");
-			}
+			go2.bfs();
+            System.out.print("expansion : " + go2.save.expansion + "\nSearch Depth : " + go2.save.depth + "\nCost : " + go2.save.cost + "\nHere is the path : " + go2.save.path );	
+		    
+			System.out.print("\n\n");
 			
 			A_star_Euclidean go3 = new A_star_Euclidean(new Node(Node.getNumber(cur)));
 			go3.GO();
-				
+			System.out.print("expansion : " + go3.save.expansion + "\nSearch Depth : " + go3.save.depth + "\nCost : " + go3.save.cost + "\nHere is the path : " + go3.save.path );	
+		    
+			System.out.print("\n\n");
+			
+			A_star_Manhattan go4 = new A_star_Manhattan(new Node(Node.getNumber(cur)));
+			go4.GO();
+			System.out.print("expansion : " + go4.save.expansion + "\nSearch Depth : " + go4.save.depth + "\nCost : " + go4.save.cost + "\nHere is the path : " + go4.save.path );	
+		   
+			
+		
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
