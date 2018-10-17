@@ -33,7 +33,6 @@ public class BFS {
 		ArrayList<Integer> x = new ArrayList<Integer>();
 		while(parent.containsKey(cur)){
 			x.add(cur);
-			int tmp = cur;
 			cur = parent.get(cur);
 		}
 		x.add(cur);

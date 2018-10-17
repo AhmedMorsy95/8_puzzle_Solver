@@ -38,7 +38,7 @@ public class Main extends Application {
 			grid.setPadding(new Insets(3,3,3,3));
 			grid.setAlignment(Pos.CENTER);
 		    
-			ArrayList<Integer> cur = (Node.generate_random());
+			ArrayList<Integer> cur = (Node.getNumberList(864213570));
 			
 			ArrayList<Label> numbers =  modify_labels(cur);
 			
@@ -73,6 +73,8 @@ public class Main extends Application {
 				System.out.println("BFS reached in " + go2.get_path_length() + " steps");
 			}
 			
+			A_star_Euclidean go3 = new A_star_Euclidean(new Node(Node.getNumber(cur)));
+			go3.GO();
 				
 		} catch(Exception e) {
 			e.printStackTrace();
