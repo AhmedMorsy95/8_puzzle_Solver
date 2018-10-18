@@ -47,6 +47,7 @@ public class DFS {
 	/// notes sometimes it doesnot reach a solution
 	
 	    boolean dfs(){  /// dfs implementation 
+	    long start_time = System.nanoTime();
 		
 		Stack<Node> s = new Stack<Node>(); 
 		
@@ -67,7 +68,7 @@ public class DFS {
 			   save.expansion = visited.size() - s.size();
 			   save.cost = get_G(cur.id);
 			   save.path = get_Path();
-
+			   save.time = System.nanoTime() - start_time;
         	  return true;
     	  }
     	  

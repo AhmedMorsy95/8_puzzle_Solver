@@ -46,6 +46,7 @@ public class BFS {
     }
 
 	boolean bfs() {
+ 	   long start_time = System.nanoTime();
 		ArrayList<Integer> state = Node.getNumberList(source.id);
 		
 		Queue<Node> q=new LinkedList<Node>();
@@ -68,6 +69,7 @@ public class BFS {
  			   save.expansion = visitedbfs.size() - q.size();
  			   save.cost = get_G(ourstate.id);
  			   save.path = get_Path();
+			   save.time = System.nanoTime() - start_time;
 				return true;
 			}
 			

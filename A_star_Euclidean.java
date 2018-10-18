@@ -71,6 +71,7 @@ public class A_star_Euclidean {
     	   return x.toString();
        }
        void GO(){
+    	   long start_time = System.nanoTime();
     	   visited.add(source.id);
     	   q.add(new my_Pair(source.id,0));
     	   depth.put(source.id, 0);
@@ -83,6 +84,7 @@ public class A_star_Euclidean {
     			   save.expansion = visited.size() - q.size();
     			   save.cost = get_G(current_node);
     			   save.path = get_Path();
+    			   save.time = System.nanoTime() - start_time;
     			   //System.out.print("A*_Euclidean reach with depth " + get_G(current_node));
     			   break;
     		   }
